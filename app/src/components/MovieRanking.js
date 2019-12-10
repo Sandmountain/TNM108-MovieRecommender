@@ -37,26 +37,19 @@ const styles = {
 
 export default class MovieRanking extends Component {
   state = {
-    rating: 0,
-    movieToRank: ""
+    rating: 0
   };
-
-  componentDidMount() {
-    axios
-      .get("https://jsonplaceholder.typicode.com/photos?_limit=1")
-      .then(res => {
-        this.setState({ movieToRank: res.data[0] });
-      });
-  }
 
   changeRating = (newRating, name) => {
     this.setState({
       rating: newRating
     });
-    console.log(newRating);
+
+    // Axios post rating and movie ID
   };
   render() {
-    const { movieToRank, rating } = this.state;
+    const { rating } = this.state;
+    const { movieToRank } = this.props;
 
     return (
       <div>

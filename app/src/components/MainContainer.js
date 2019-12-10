@@ -7,7 +7,6 @@ import RecommendMovies from "./RecommendMovies";
 import ImageSelection from "./ImageSelection";
 import MovieRanking from "./MovieRanking";
 
-import tileData from "../tileData";
 import axios from "axios";
 
 const styles = {
@@ -33,7 +32,8 @@ export default class MainContainer extends Component {
   state = {
     recommendedMovies: [],
     selectedMovies: [],
-    movieSelection: []
+    movieSelection: [],
+    movieToRank: ""
   };
 
   componentDidMount() {
@@ -46,6 +46,14 @@ export default class MainContainer extends Component {
     axios
       .get("https://jsonplaceholder.typicode.com/photos?_limit=10")
       .then(res => this.setState({ recommendedMovies: res.data }));
+  };
+
+  getMovieToRate = () => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/photos?_limit=1")
+      .then(res => {
+        this.setState({ movieToRank: res.data[0] });
+      });
   };
 
   selectedMovie = id => {
@@ -67,6 +75,7 @@ export default class MainContainer extends Component {
         );
 
       this.getRecommendedMovies();
+      this.getMovieToRate();
     }
   };
 
@@ -80,9 +89,14 @@ export default class MainContainer extends Component {
           alignItems="center"
           style={{ marginTop: "100px" }}
         >
-          <Grid item xs={4}>
-            <MovieRanking />
-          </Grid>
+          {this.state.movieToRank !== "" ? (
+            <Grid item xs={4}>
+              <MovieRanking movieToRank={this.state.movieToRank} />
+            </Grid>
+          ) : (
+            <div></div>
+          )}
+
           <Grid item xs={8}>
             <Paper style={styles.paperTitle}>
               <Typography variant="h5" component="h3">
@@ -94,19 +108,22 @@ export default class MainContainer extends Component {
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={8}>
-            <Paper style={styles.paperImgSel}>
-              <ImageSelection
-                imgData={this.state.movieSelection}
-                selectedMovie={this.selectedMovie}
-              />
-            </Paper>
-          </Grid>
-          <Grid item xs={8}>
-            <Paper style={styles.paper}>
-              <RecommendMovies imgData={this.state.recommendedMovies} />
-            </Paper>
-          </Grid>
+          {this.state.recommendedMovies.length > 0 ? (
+            <Grid item xs={8}>
+              <Paper style={styles.paper}>
+                <RecommendMovies imgData={this.state.recommendedMovies} />
+              </Paper>
+            </Grid>
+          ) : (
+            <Grid item xs={8}>
+              <Paper style={styles.paperImgSel}>
+                <ImageSelection
+                  imgData={this.state.movieSelection}
+                  selectedMovie={this.selectedMovie}
+                />
+              </Paper>
+            </Grid>
+          )}
         </Grid>
       </div>
     );
