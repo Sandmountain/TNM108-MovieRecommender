@@ -20,7 +20,7 @@ export default class ImageSelection extends Component {
 
     return (
       <div>
-        <GridList cellHeight={240} cols={3} style={styles.gridList}>
+        <GridList cellHeight={200} cols={3} style={styles.gridList}>
           {imgData.map(tile => (
             <GridListTile key={tile.id}>
               <img

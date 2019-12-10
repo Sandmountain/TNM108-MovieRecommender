@@ -5,6 +5,8 @@ import Grid from "@material-ui/core/Grid";
 
 import RecommendMovies from "./RecommendMovies";
 import ImageSelection from "./ImageSelection";
+import MovieRanking from "./MovieRanking";
+
 import tileData from "../tileData";
 import axios from "axios";
 
@@ -30,27 +32,42 @@ const styles = {
 export default class MainContainer extends Component {
   state = {
     recommendedMovies: [],
-    moviesTest: []
+    selectedMovies: [],
+    movieSelection: []
   };
 
   componentDidMount() {
     axios
-      .get("https://jsonplaceholder.typicode.com/photos?_limit=10")
-      .then(res => this.setState({ moviesTest: res.data }));
+      .get("https://jsonplaceholder.typicode.com/photos?_limit=3")
+      .then(res => this.setState({ movieSelection: res.data }));
   }
 
-  selectedMovie = id => {
+  getRecommendedMovies = () => {
     axios
-      .post("https://jsonplaceholder.typicode.com/photos", {
-        albumId: 1,
-        id,
-        title: "Randy Beast",
-        url: "https://i.gyazo.com/b3a47262ff258e622b3803036b4f8cb6.png",
-        thumbnailUrl: "https://via.placeholder.com/150/771796"
-      })
-      .then(res =>
-        this.setState({ moviesTest: [...this.state.moviesTest, res.data] })
-      );
+      .get("https://jsonplaceholder.typicode.com/photos?_limit=10")
+      .then(res => this.setState({ recommendedMovies: res.data }));
+  };
+
+  selectedMovie = id => {
+    this.setState({ selectedMovies: [...this.state.selectedMovies, id] });
+
+    if (this.state.selectedMovies.length === 2) {
+      axios
+        .post("https://jsonplaceholder.typicode.com/photos", {
+          albumId: 1,
+          id,
+          title: "Randy Beast",
+          url: "https://i.gyazo.com/b3a47262ff258e622b3803036b4f8cb6.png",
+          thumbnailUrl: "https://via.placeholder.com/150/771796"
+        })
+        .then(res =>
+          this.setState({
+            movieSelection: [...this.state.movieSelection, res.data]
+          })
+        );
+
+      this.getRecommendedMovies();
+    }
   };
 
   render() {
@@ -58,11 +75,15 @@ export default class MainContainer extends Component {
       <div>
         <Grid
           container
+          direction="column"
           justify="center"
           alignItems="center"
           style={{ marginTop: "100px" }}
         >
-          <Grid container item xs={8}>
+          <Grid item xs={4}>
+            <MovieRanking />
+          </Grid>
+          <Grid item xs={8}>
             <Paper style={styles.paperTitle}>
               <Typography variant="h5" component="h3">
                 This is a sheet of paper.
@@ -72,14 +93,18 @@ export default class MainContainer extends Component {
                 application.sdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasddddddddddddddd
               </Typography>
             </Paper>
+          </Grid>
+          <Grid item xs={8}>
             <Paper style={styles.paperImgSel}>
               <ImageSelection
-                imgData={this.state.moviesTest}
+                imgData={this.state.movieSelection}
                 selectedMovie={this.selectedMovie}
               />
             </Paper>
+          </Grid>
+          <Grid item xs={8}>
             <Paper style={styles.paper}>
-              <RecommendMovies imgData={this.state.moviesTest} />
+              <RecommendMovies imgData={this.state.recommendedMovies} />
             </Paper>
           </Grid>
         </Grid>
