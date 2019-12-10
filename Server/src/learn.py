@@ -27,60 +27,60 @@ def combine_features(row):
 
 ##################################################
 
+def init():
+    # Step 2: Select Features
+    features = ['genres', 'top_cast', 'keywords', 'director']
 
-# Step 1: Read CSV File
-df = pd.read_csv("./src/data/movies_database.csv", low_memory=False)
+    # Step 3: Create a column in DF which combines all selected features
+    for feature in features:
+        df[features] = df[features].fillna('')  # fills NaN with empty string
 
-# Step 2: Select Features
-features = ['genres', 'top_cast', 'keywords', 'director']
-
-# Step 3: Create a column in DF which combines all selected features
-for feature in features:
-    df[features] = df[features].fillna('')  # fills NaN with empty string
-
-
-print(df.size)
-
-df["combined_features"] = df.apply(combine_features, axis=1)  # <- rows, not cols
-df = df[:20000]
-
-# Step 4: Create count matrix from this new combined column
-cv = CountVectorizer()
-
-count_matrix = cv.fit_transform(df["combined_features"])
-
-# Step 5: Compute the Cosine Similarity based on the count_matrix
-cSimilarity = cosine_similarity(count_matrix)
+    df["combined_features"] = df.apply(combine_features, axis=1)  # <- rows, not cols
+   
 
 
-movie_user_likes = "Toy Story"
+def getRecomendation(movie_user_likes = "Toy Story"):
+    # Step 4: Create count matrix from this new combined column
+    cv = CountVectorizer()
+    count_matrix = cv.fit_transform(df["combined_features"])
 
-# Step 6: Get index of this movie from its title
-movie_index = get_index_from_title(movie_user_likes)
-#print(movie_index)
+    # Step 5: Compute the Cosine Similarity based on the count_matrix
+    cSimilarity = cosine_similarity(count_matrix)
+    
+    #Save to or have in memory?
+    #np.save("cosine.npy", cSimilarity)
 
-similar_movies = list(enumerate(cSimilarity[movie_index]))
+    # Step 6: Get index of this movie from its title
+    movie_index = get_index_from_title(movie_user_likes)
 
-# Step 7: Get a list of similar movies in descending order of similarity score
-sorted_similar_movies = sorted(
-    similar_movies, key=lambda x: x[1], reverse=True)
 
-# Step 8: Print titles of first 50 movies
-counter = 0
-for movie in sorted_similar_movies:
-    print(get_title_from_index(movie[0]))
+    #print(df["combined_features"][movie_index])
+    similar_movies = list(enumerate(cSimilarity[movie_index]))
 
-    if(counter >= 50):
-        break
+    # Step 7: Get a list of similar movies in descending order of similarity score
+    return sorted(similar_movies, key=lambda x: x[1], reverse=True)
 
-    counter = counter + 1
+def printMovies(sorted_similar_movies):
+    # Step 8: Print titles of first 50 movies
+    counter = 0
+    for movie in sorted_similar_movies:
+        print(get_title_from_index(movie[0]))
 
+        if(counter >= 50):
+            break
+
+        counter = counter + 1
 
 def getRandomMovie():
-    rand = random.randint(1, len(data))
-    return data['original_title'][rand]
+    rand = random.randint(1, len(df))
+    return df['original_title'][rand]
 
+# Step 1: Read CSV File
+df = pd.read_csv("./src/data/trim_movie_database.csv", low_memory=False)
 
-# data = pd.read_csv("./data/movies_metadata.csv")
-# data = pd.read_csv("./src/data/movies_metadata.csv", low_memory=False)
-# callingOnYou()
+#Filter movies to only take the relevant into account.
+df = df[df["revenue"] > 0]
+
+init()
+movies = getRecomendation()
+printMovies(movies)

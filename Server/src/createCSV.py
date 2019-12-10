@@ -72,7 +72,7 @@ print(df.size)
 df["director"] = df_credit["director"]
 df["top_cast"] = df_credit["top_cast"]
 df["keywords"] = df_keywords["keywords"]
-df = df[df["revenue"] >= 0]
+#df = df[df["revenue"] > 0]
 print(df.head())
 print(df.columns)
 
