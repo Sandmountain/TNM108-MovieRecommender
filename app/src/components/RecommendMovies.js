@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
 
-import tileData from "../tileData";
 export default class RecommendMovies extends Component {
   render() {
     return (
       <div>
         <GridList cellHeight={240} cols={5}>
-          {tileData.map(tile => (
-            <GridListTile key={tile.author}>
+          {this.props.imgData.map(tile => (
+            <GridListTile key={tile.id}>
               <img
-                src={tile.img}
+                src={tile.url}
                 alt={tile.title}
                 style={{ height: "100%", width: "100%" }}
               />
