@@ -5,7 +5,7 @@ from src.learn import getRandomMovie
 
 app = Flask(__name__, static_url_path="")
 movieList = ''
-
+movieListArray = []
 
 @app.errorhandler(400)
 def not_found(error):
@@ -23,7 +23,9 @@ def add_movie():
     if not request.json or not 'title' in request.json:
         abort(400)
 
-    return jsonify({'task': request.json['title']}), 201
+    movieListArray.append(jsonify({'task': request.json['title']}))
+    
+    return movieListArray, 201
 
 
 # Gets the movies depending on current user
