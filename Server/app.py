@@ -1,21 +1,17 @@
 #!flask/bin/python
 from flask import Flask, jsonify, abort, request, make_response, url_for
 import requests
-from src.learn import getRandomMovie
+from src.learn import getRandomMovie, getRecomendation
+
 
 app = Flask(__name__, static_url_path="")
 movieList = ''
 movieListArray = []
+movieFeatures = []
 
 @app.errorhandler(400)
 def not_found(error):
     return make_response(jsonify({'error': 'Bad request'}), 400)
-
-
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)
-
 
 # Updates the new information aobut the user
 @app.route('/add_movie', methods=['POST'])
@@ -23,9 +19,11 @@ def add_movie():
     if not request.json or not 'title' in request.json:
         abort(400)
 
-    movieListArray.append(jsonify({'task': request.json['title']}))
-    
-    return movieListArray, 201
+    movieListArray.append(request.json['title'])
+    movieFeatures.append(getRecomendation(request.json['title'])[0])
+
+    print(movieFeatures)
+    return "hello", 201
 
 
 # Gets the movies depending on current user

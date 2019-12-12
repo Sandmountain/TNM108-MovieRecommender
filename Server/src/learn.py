@@ -13,7 +13,7 @@ def get_title_from_index(index):
 
 def get_index_from_title(title):
     #print(title)
-    #return df[df.original_title == title]["original_title"].values[0]
+    #print(df[df["original_title"] == title][])
     return df[df.original_title == title].index.values.astype(int)[0]
 
 
@@ -36,26 +36,22 @@ def init():
         df[features] = df[features].fillna('')  # fills NaN with empty string
 
     df["combined_features"] = df.apply(combine_features, axis=1)  # <- rows, not cols
-   
-
-
-def getRecomendation(movie_user_likes = "Toy Story"):
-    # Step 4: Create count matrix from this new combined column
+    # Step 4: Create count matrix from this new combined column 
     cv = CountVectorizer()
     count_matrix = cv.fit_transform(df["combined_features"])
 
     # Step 5: Compute the Cosine Similarity based on the count_matrix
-    cSimilarity = cosine_similarity(count_matrix)
-    
-    #Save to or have in memory?
-    #np.save("cosine.npy", cSimilarity)
+    return cosine_similarity(count_matrix)
 
+
+def getRecomendation(movie_user_likes):  
     # Step 6: Get index of this movie from its title
     movie_index = get_index_from_title(movie_user_likes)
+    return df["combined_features"][movie_index], getRecomendationList(cSimilarity[movie_index])
 
-
-    #print(df["combined_features"][movie_index])
-    similar_movies = list(enumerate(cSimilarity[movie_index]))
+def getRecomendationList(cosineMatrix):
+    
+    similar_movies = list(enumerate(cosineMatrix))
 
     # Step 7: Get a list of similar movies in descending order of similarity score
     return sorted(similar_movies, key=lambda x: x[1], reverse=True)
@@ -76,11 +72,15 @@ def getRandomMovie():
     return df['original_title'][rand]
 
 # Step 1: Read CSV File
-df = pd.read_csv("./src/data/trim_movie_database.csv", low_memory=False)
+df = pd.read_csv("./src/data/movies_database.csv", low_memory=False)
+#df = df.sort_values(by=['popularity'], ascending=False)
+#df = df[:10000]
 
 #Filter movies to only take the relevant into account.
-df = df[df["revenue"] > 0]
+#df = df[df["revenue"] > 0]
+#df = df[:20000]
 
-init()
-movies = getRecomendation()
-printMovies(movies)
+
+cSimilarity = init()
+#movies = getRecomendation("toy")
+#printMovies(movies)

@@ -5,7 +5,7 @@ import ast
 import numpy as np
 
 
-#####
+###########
 
 def getDirector(row):
     for info in ast.literal_eval(row["crew"]):
@@ -72,7 +72,8 @@ print(df.size)
 df["director"] = df_credit["director"]
 df["top_cast"] = df_credit["top_cast"]
 df["keywords"] = df_keywords["keywords"]
-#df = df[df["revenue"] > 0]
+
+
 print(df.head())
 print(df.columns)
 
