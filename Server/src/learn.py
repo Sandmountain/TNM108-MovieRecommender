@@ -8,8 +8,11 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 ###### helper functions. Use them when needed #######
+
+
 def get_title_from_index(index):
     return df["original_title"].iloc[index]
+
 
 def get_index_from_title(title):
     #print(title)
@@ -19,13 +22,14 @@ def get_index_from_title(title):
 
 def combine_features(row):
     try:
-        return row["genres"] + row["top_cast"] + " " + row["keywords"] + " " +  row["director"]
+        return row["genres"] + row["top_cast"] + " " + row["keywords"] + " " + row["director"]
     except ValueError as e:
-        #pass
+        # pass
         print(e)
-        #print("Error:", row)
+        # print("Error:", row)
 
 ##################################################
+
 
 def init():
     # Step 2: Select Features
@@ -56,6 +60,7 @@ def getRecomendationList(cosineMatrix):
     # Step 7: Get a list of similar movies in descending order of similarity score
     return sorted(similar_movies, key=lambda x: x[1], reverse=True)
 
+
 def printMovies(sorted_similar_movies):
     # Step 8: Print titles of first 50 movies
     counter = 0
@@ -67,20 +72,23 @@ def printMovies(sorted_similar_movies):
 
         counter = counter + 1
 
+
 def getRandomMovie():
     rand = random.randint(1, len(df))
-    return df['original_title'][rand]
+    print("Rand index: ", rand)
+
+    df_temp = df.iloc[[rand]]
+    print("Df test good req\n", df_temp.iloc[0]['original_title'])
+    return {'original_title': df_temp.iloc[0]['original_title'], 'poster_path': "http://image.tmdb.org/t/p/w185" + df_temp.iloc[0]['poster_path']}
+
 
 # Step 1: Read CSV File
-df = pd.read_csv("./src/data/movies_database.csv", low_memory=False)
-#df = df.sort_values(by=['popularity'], ascending=False)
-#df = df[:10000]
+df = pd.read_csv("./src/data/trim_movie_database_Jacob.csv",
+                 low_memory=False, index_col=0)
 
-#Filter movies to only take the relevant into account.
-#df = df[df["revenue"] > 0]
-#df = df[:20000]
-
-
+# Filter movies to only take the relevant into account.
+# df = df[df["revenue"] > 0]
+# df = df[:5000]
 cSimilarity = init()
-#movies = getRecomendation("toy")
-#printMovies(movies)
+#movies = getRecomendation()
+# printMovies(movies)
