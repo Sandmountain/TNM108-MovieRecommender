@@ -33,10 +33,14 @@ export default class MainContainer extends Component {
     recommendedMovies: [],
     selectedMovies: [],
     movieSelection: [],
-    movieToRank: ""
+    movieToRank: {
+      original_title: "",
+      poster_path: ""
+    }
   };
 
   componentDidMount() {
+    this.getMovieToRate();
     axios
       .get("https://jsonplaceholder.typicode.com/photos?_limit=3")
       .then(res => this.setState({ movieSelection: res.data }));
@@ -49,11 +53,15 @@ export default class MainContainer extends Component {
   };
 
   getMovieToRate = () => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/photos?_limit=1")
-      .then(res => {
-        this.setState({ movieToRank: res.data[0] });
-      });
+    axios.get("http://127.0.0.1:5000/movies").then(res =>
+      this.setState(prevState => ({
+        movieToRank: {
+          ...prevState.movieToRank,
+          original_title: res.data.original_title,
+          poster_path: res.data.poster_path
+        }
+      }))
+    );
   };
 
   selectedMovie = id => {

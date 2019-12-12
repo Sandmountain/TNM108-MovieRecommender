@@ -9,7 +9,6 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 
 import StarRatings from "react-star-ratings";
-import axios from "axios";
 
 const styles = {
   card: {
@@ -57,8 +56,8 @@ export default class MovieRanking extends Component {
           <CardActionArea>
             <CardMedia
               style={styles.media}
-              image={movieToRank.url}
-              title={movieToRank.title}
+              image={movieToRank.poster_path}
+              title={movieToRank.original_title}
             />
           </CardActionArea>
           <CardContent style={styles.cardContent}>
@@ -70,7 +69,7 @@ export default class MovieRanking extends Component {
             >
               <Grid item xs={6}>
                 <Typography variant="h6" component="h5">
-                  Lizard
+                  {movieToRank.original_title}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
