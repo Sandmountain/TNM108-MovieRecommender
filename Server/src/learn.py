@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-###### helper functions. Use them when needed #######
+###### Get Functions #######
 
 
 def get_title_from_index(index):
@@ -23,11 +23,9 @@ def combine_features(row):
     try:
         return row["genres"] + row["top_cast"] + " " + row["keywords"] + " " + row["director"]
     except ValueError as e:
-        # pass
         print(e)
-        # print("Error:", row)
-
-##################################################
+    
+############################
 
 
 def init():
@@ -60,16 +58,15 @@ def getManyRecomendations(movie_indexes):
     for index in movie_indexes:
         similar_movies_array.append(getRecomendationList(cSimilarity[index]))
 
-    #print(similar_movies_array)
     return chooseMovies(similar_movies_array, movie_indexes)
 
 #importing the list, and/or the raiting
-def chooseMovies(similar_movie_list, movie_indexes):
-    #A list of similiarlities to other movies, sorted with highest similiariteis first.
-    #if weighting: 
+ #if weighting: 
     #(star: 1-2, listOfSimiliarMovies), if len(movie_indexes) < 2, resort and set reverse=False
     #(star: 3, listOfSimiliarMovies), if len(movie_indexes) < 2, use similar_movie_list[len(similar_movie_list)/2][:10]
     #(star: 4-5, listOfSimiliarMovies), return top 10 or w/e
+def chooseMovies(similar_movie_list, movie_indexes):
+    #A list of similiarlities to other movies, sorted with highest similiariteis first.
     moviesToRecommend = set()
     #design choise: choosing 4 movies from the latest added, 4 old ones.
     if(len(movie_indexes) == 1):
@@ -80,7 +77,6 @@ def chooseMovies(similar_movie_list, movie_indexes):
         moviesToRecommend = set()
         for i in range(1, 5):
             #take a random movie then select a random of the 5 most similar in the lists
-            #sizeOfSet = len(moviesToRecommend)
             sizeOfSet = len(moviesToRecommend)
             while(True):
                 randMovie = random.randint(0, len(movie_indexes)-1)
@@ -103,7 +99,7 @@ def chooseMovies(similar_movie_list, movie_indexes):
     
 def formatMovieList(moviesToRecommend):
     toReturn = []
-    print(moviesToRecommend)
+    random.shuffle(moviesToRecommend)
     for movie in moviesToRecommend:
         movieIndex = get_index_from_title(movie)
         toReturn.append(
@@ -115,37 +111,10 @@ def formatMovieList(moviesToRecommend):
         )
     return toReturn
 
-
-"""
-def getUniqueMovie(movie_recommendation_list, movie, listLength, movieList, movieIndex, counter):
-    if(movie in movie_recommendation_list):
-        # Fix randSimilar to increment.
-        # Väljer någon av de 4 första filmerna.
-        counter = counter + 1
-        getUniqueMovie(movie_recommendation_list, get_title_from_index(movieList[movieIndex][counter][0]), listLength, movieList, movieIndex, counter)
-    else:
-        print(movie_recommendation_list)
-        print(movie)
-        return movie
-"""
-
 def getRecomendationList(cosineMatrix):
     similar_movies = list(enumerate(cosineMatrix))
     # Step 7: Get a list of similar movies in descending order of similarity score
     return sorted(similar_movies, key=lambda x: x[1], reverse=True)
-
-
-def printMovies(sorted_similar_movies):
-    # Step 8: Print titles of first 50 movies
-    counter = 0
-    for movie in sorted_similar_movies:
-        print(get_title_from_index(movie[0]))
-
-        if(counter >= 50):
-            break
-
-        counter = counter + 1
-
 
 def getRandomMovie():
     rand = random.randint(1, len(df))
