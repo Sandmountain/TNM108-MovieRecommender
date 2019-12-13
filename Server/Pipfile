@@ -12,6 +12,8 @@ requests = "*"
 pandas = "*"
 sklearn = "*"
 flask-cors = "*"
+bson-json-util = "*"
+bson = "*"
 
 [requires]
 python_version = "3.7"
