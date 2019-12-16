@@ -11,7 +11,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 movieList = ''
 movieListArray = []
 movieFeatures = []
-
+movieBlackList = []
 
 @app.errorhandler(400)
 def not_found(error):
@@ -23,9 +23,15 @@ def add_movie():
     if not request.json or not 'title' in request.json:
         abort(400)
 
-    #movieListArray.append(request.json['title'])
-    movieFeatures.append(getRecomendation(request.json['title'])[0])
-    movieListArray = getManyRecomendations(movieFeatures)
+   
+    if(request.json["recommend"] == True):
+        movieFeatures.append(getRecomendation(request.json['title'])[0])
+        movieListArray = getManyRecomendations(movieFeatures, movieBlackList)
+    else:
+        movieBlackList.append(request.json['title'])
+        #Update with last added values without the blacklist
+        movieListArray = getManyRecomendations(movieFeatures, movieBlackList)
+
     response = app.response_class(
         response=json.dumps(movieListArray),
         status=200,
