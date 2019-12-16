@@ -24,7 +24,7 @@ def get_poster_path_from_index(index):
 
 def combine_features(row):
     try:
-        return row["genres"] + " " + row["director"] + "" + str(row["budget"]) + "" + row["release_date"] + "" + row["top_cast"] + "" + row["keywords"]
+        return row["original_title"] + " " + row["director"] + " " + row["keywords"] + " " + row["top_cast"] + " " + row["firstGenre"]
     except ValueError as e:
         print(e)
 
@@ -33,7 +33,7 @@ def combine_features(row):
 
 def init():
     # Step 2: Select Features
-    features = ['genres', 'director', 'budget', "release_date", "top_cast", "keywords"]
+    features = ['director', "keywords", "original_title", "top_cast", "firstGenre"]
 
     # Step 3: Create a column in DF which combines all selected features
     for feature in features:
@@ -41,6 +41,7 @@ def init():
 
     df["combined_features"] = df.apply(
         combine_features, axis=1)  # <- rows, not cols
+
     # Step 4: Create count matrix from this new combined column
     cv = CountVectorizer()
     count_matrix = cv.fit_transform(df["combined_features"])

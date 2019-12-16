@@ -30,9 +30,14 @@ export default class SingleRecomendation extends Component {
   }
 
   getMovieSelection = () => {
-    axios
-      .get("http://localhost:5000/movieSelection")
-      .then(res => this.setState({ movieSelection: res.data }));
+    axios.get("http://localhost:5000/SingleMovieSelection").then(res => {
+      let shuffledArray = res.data
+        .map(a => [Math.random(), a])
+        .sort((a, b) => a[0] - b[0])
+        .map(a => a[1]);
+
+      this.setState({ movieSelection: shuffledArray });
+    });
   };
 
   getRecommendedMovies = () => {
@@ -93,7 +98,7 @@ export default class SingleRecomendation extends Component {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => console.log("resuffle")}
+            onClick={() => this.getMovieSelection()}
             style={{ marginBottom: 65 }}
           >
             {" "}
