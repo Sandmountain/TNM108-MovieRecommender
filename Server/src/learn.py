@@ -56,14 +56,14 @@ def getRecomendation(movie_user_likes):
     return movie_index, getRecomendationList(cSimilarity[movie_index])
 
 
-def getManyRecomendations(movie_indexes):
+def getManyRecomendations(movie_indexes, movieBlackList):
     # Loop through all indexes
     similar_movies_array = []
     # if using stars: for info in movie_raitings => info.index
     for index in movie_indexes:
         similar_movies_array.append(getRecomendationList(cSimilarity[index]))
 
-    return chooseMovies(similar_movies_array, movie_indexes)
+    return chooseMovies(similar_movies_array, movie_indexes, movieBlackList)
 
 # importing the list, and/or the raiting
  # if weighting:
@@ -72,36 +72,55 @@ def getManyRecomendations(movie_indexes):
     # (star: 4-5, listOfSimiliarMovies), return top 10 or w/e
 
 
-def chooseMovies(similar_movie_list, movie_indexes):
+def chooseMovies(similar_movie_list, movie_indexes, movieBlackList):
     # A list of similiarlities to other movies, sorted with highest similiariteis first.
     moviesToRecommend = set()
     # design choise: choosing 4 movies from the latest added, 4 old ones.
     if(len(movie_indexes) == 1):
-        for i in range(1, 9):
-            moviesToRecommend.add(
-                (get_title_from_index(similar_movie_list[0][i][0])))
+        similarIDX = 1
+        # Runs until the list is filled with 8 elements
+        while len(moviesToRecommend) < 8:
+            movieToAdd = get_title_from_index(
+                similar_movie_list[0][similarIDX][0])
+            if(movieToAdd in movieBlackList):
+                similarIDX = similarIDX + 1
+            else:
+                similarIDX = similarIDX + 1
+                moviesToRecommend.add(movieToAdd)
     else:
         # Take 4 random movies from older ones.
         moviesToRecommend = set()
-        for i in range(1, 5):
+        for i in range(1, 7):
             # take a random movie then select a random of the 5 most similar in the lists
             sizeOfSet = len(moviesToRecommend)
+            similarIDX = 1
             while(True):
                 randMovie = random.randint(0, len(movie_indexes)-1)
-                randSimilar = random.randint(1, 5)
-                moviesToRecommend.add(get_title_from_index(
-                    similar_movie_list[randMovie][randSimilar][0]))
+                movieToAdd = get_title_from_index(
+                    similar_movie_list[randMovie][similarIDX][0])
+
+                if(movieToAdd in movieBlackList):
+                    similarIDX = similarIDX + 1
+                else:
+                    similarIDX = similarIDX + 1
+                    moviesToRecommend.add(movieToAdd)
+
                 if(sizeOfSet < len(moviesToRecommend)):
                     break
-
-        for i in range(1, 5):
+        # Movies from the latest one added
+        for i in range(1, 3):
             sizeOfSet = len(moviesToRecommend)
-            counter = 0
+            similarIDX = 1
             while(True):
-                randMovie = random.randint(0, len(movie_indexes)-1)
-                counter = counter + 1
-                moviesToRecommend.add(get_title_from_index(
-                    similar_movie_list[-1][counter][0]))
+                movieToAdd = get_title_from_index(
+                    similar_movie_list[-1][similarIDX][0])
+
+                if(movieToAdd in movieBlackList):
+                    similarIDX = similarIDX + 1
+                else:
+                    similarIDX = similarIDX + 1
+                    moviesToRecommend.add(movieToAdd)
+
                 if(sizeOfSet < len(moviesToRecommend)):
                     break
 
