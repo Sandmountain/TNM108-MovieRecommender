@@ -40,13 +40,17 @@ def add_movie():
     return response
    
 
-# Gets the movies depending on current user
+
+
 @app.route('/movies')
 @cross_origin()
 def movies():
     #res = requests.get('https://jsonplaceholder.typicode.com/users')
-
+    
     newMovie = getRandomMovie()
+    if(newMovie in movieBlackList):
+        movies()
+
     return newMovie, 201
 
 

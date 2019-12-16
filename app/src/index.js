@@ -4,7 +4,8 @@ import App from "./App";
 import {
   CssBaseline,
   createMuiTheme,
-  MuiThemeProvider
+  MuiThemeProvider,
+  rgbToHex
 } from "@material-ui/core";
 import { grey, blueGrey } from "@material-ui/core/colors";
 //import { dark } from "@material-ui/core/styles/createPalette";
@@ -15,7 +16,7 @@ const theme = createMuiTheme({
       main: grey[900]
     },
     secondary: {
-      main: blueGrey[700]
+      main: "#e6432f"
     }
   }
 });

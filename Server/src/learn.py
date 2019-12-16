@@ -143,7 +143,7 @@ def getRandomMovie():
 
     df_temp = df.iloc[[rand]]
     print("Df test good req\n", df_temp.iloc[0]['original_title'])
-    return {'original_title': df_temp.iloc[0]['original_title'], 'poster_path': "http://image.tmdb.org/t/p/w185" + df_temp.iloc[0]['poster_path']}
+    return {'original_title': df_temp.iloc[0]['original_title'], 'poster_path': "http://image.tmdb.org/t/p/w185" + df_temp.iloc[0]['poster_path'], 'overview': df_temp.iloc[0]['overview']}
 
 
 # Step 1: Read CSV File

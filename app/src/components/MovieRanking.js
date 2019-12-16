@@ -16,8 +16,9 @@ const styles = {
     margin: 5
   },
   media: {
-    height: 300,
-    width: 300,
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
     margin: 5
   },
   cardContent: {
@@ -52,59 +53,14 @@ export default class MovieRanking extends Component {
 
     return (
       <div>
-        <Card style={styles.card}>
-          <CardActionArea>
-            <CardMedia
-              style={styles.media}
-              image={movieToRank.poster_path}
-              title={movieToRank.original_title}
-            />
-          </CardActionArea>
-          <CardContent style={styles.cardContent}>
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item xs={6}>
-                <Typography variant="h6" component="h5">
-                  {movieToRank.original_title}
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <StarRatings
-                  rating={rating}
-                  starRatedColor="blue"
-                  changeRating={this.changeRating}
-                  numberOfStars={5}
-                  name="rating"
-                  starDimension="20px"
-                  starSpacing="3px"
-                />
-              </Grid>
-            </Grid>
-          </CardContent>
-          <CardActions style={styles.buttonContent}>
-            <Grid
-              container
-              direction="row"
-              alignItems="stretch"
-              justify="space-between"
-            >
-              <Grid item xs={4}>
-                <Button size="medium" color="primary">
-                  Prev
-                </Button>
-              </Grid>
-              <Grid item style={styles.rightButton} xs={4}>
-                <Button size="medium" color="primary">
-                  Next
-                </Button>
-              </Grid>
-            </Grid>
-          </CardActions>
-        </Card>
+        <CardActionArea>
+          <CardMedia
+            style={styles.media}
+            component="img"
+            image={movieToRank.poster_path}
+            title={movieToRank.original_title}
+          />
+        </CardActionArea>
       </div>
     );
   }

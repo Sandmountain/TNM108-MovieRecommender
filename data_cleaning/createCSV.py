@@ -82,15 +82,12 @@ df = pd.read_csv("./src/data/trim_movie_database.csv",
                  low_memory=False, index_col=0)
 df = df[df["revenue"] > 0]
 
-<<<<<<< HEAD
 print(df.size)
 df["director"] = df_credit["director"]
 df["top_cast"] = df_credit["top_cast"]
 df["keywords"] = df_keywords["keywords"]
 
 
-=======
->>>>>>> 781b0a50c200afe6a5ce80c0f5cd054bdbd8ad25
 print(df.head())
 print(df.columns)
 
