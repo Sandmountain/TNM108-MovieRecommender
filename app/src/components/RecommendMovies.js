@@ -9,7 +9,7 @@ export default class RecommendMovies extends Component {
           {this.props.imgData.map(tile => (
             <GridListTile key={tile.id}>
               <img
-                src={tile.url}
+                src={`http://image.tmdb.org/t/p/w185/${tile.path}`}
                 alt={tile.title}
                 style={{ height: "100%", width: "100%" }}
               />

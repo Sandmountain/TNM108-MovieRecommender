@@ -43,11 +43,14 @@ export default class MainContainer extends Component {
   };
 
   componentDidMount() {
-    this.getMovieToRate();
-    axios
-      .get("https://jsonplaceholder.typicode.com/photos?_limit=5")
-      .then(res => this.setState({ movieSelection: res.data }));
+    this.getMovieSelection();
   }
+
+  getMovieSelection = () => {
+    axios
+      .get("http://localhost:5000/movieSelection")
+      .then(res => this.setState({ movieSelection: res.data }));
+  };
 
   getRecommendedMovies = () => {
     axios
@@ -68,27 +71,24 @@ export default class MainContainer extends Component {
     );
   };
 
-  selectedMovie = id => {
-    this.setState({
-      selectedMovies: [...this.state.selectedMovies, id]
-    });
+  selectedMovie = title => {
+    this.setState({ selectedMovies: [...this.state.selectedMovies, title] });
 
     if (this.state.selectedMovies.length === 2) {
-      axios
-        .post("https://jsonplaceholder.typicode.com/photos", {
-          albumId: 1,
-          id,
-          title: "Randy Beast",
-          url: "https://i.gyazo.com/b3a47262ff258e622b3803036b4f8cb6.png",
-          thumbnailUrl: "https://via.placeholder.com/150/771796"
-        })
-        .then(res =>
-          this.setState({
-            movieSelection: [...this.state.movieSelection, res.data]
-          })
-        );
+      let payload = [];
 
-      this.getRecommendedMovies();
+      for (let i = 0; i < this.state.selectedMovies.length; i++) {
+        payload.push({
+          title: this.state.selectedMovies[i]
+        });
+      }
+      axios.post("http://localhost:5000/add_movies", payload).then(res =>
+        this.setState({
+          recommendedMovies: res.data
+        })
+      );
+
+      //this.getRecommendedMovies();
       this.getMovieToRate();
     }
   };
@@ -113,7 +113,7 @@ export default class MainContainer extends Component {
           alignItems="center"
           style={{ marginTop: "100px" }}
         >
-          {this.state.movieToRank !== "" ? (
+          {this.state.movieToRank.original_title !== "" ? (
             <Grid item xs={8}>
               <Card style={{ marginBottom: 20 }}>
                 <Grid container alignItems="center">
