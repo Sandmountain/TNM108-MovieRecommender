@@ -32,12 +32,6 @@ export default class MainContainer extends Component {
       .then(res => this.setState({ movieSelection: res.data }));
   };
 
-  getRecommendedMovies = () => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/photos?_limit=10")
-      .then(res => this.setState({ recommendedMovies: res.data }));
-  };
-
   getMovieToRate = () => {
     axios.get("http://127.0.0.1:5000/movies").then(res =>
       this.setState(prevState => ({
@@ -68,19 +62,31 @@ export default class MainContainer extends Component {
         })
       );
 
-      //this.getRecommendedMovies();
       this.getMovieToRate();
     }
   };
 
-  getRandomMovie = () => {
-    this.getMovieToRate();
-  };
-
-  sendRaiting = (raiting, name) => {
+  sendRating = (rating, title) => {
     //send to server
     console.log("Sending raiting to server, then should update");
-    console.log(raiting + ", and " + name);
+    console.log(rating + ", and " + title);
+
+    let recommend = true;
+    if (rating < 3) {
+      recommend = false;
+    }
+    let payload = {
+      title: title,
+      recommend: recommend
+    };
+
+    axios.post("http://localhost:5000/add_movie", payload).then(res =>
+      this.setState({
+        recommendedMovies: res.data
+      })
+    );
+
+    this.getMovieToRate();
   };
 
   render() {
@@ -102,8 +108,8 @@ export default class MainContainer extends Component {
                   </Grid>
                   <Grid item xs={10} style={{ padding: 15 }}>
                     <MovieRankingContainer
-                      sendRaiting={this.sendRaiting}
-                      getRandomMovie={this.getRandomMovie}
+                      sendRating={this.sendRating}
+                      getMovieToRate={this.getMovieToRate}
                       movieToRank={this.state.movieToRank}
                     />
                     <Grid />

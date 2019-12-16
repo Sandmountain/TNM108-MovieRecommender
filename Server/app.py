@@ -3,7 +3,7 @@ from flask import Flask, jsonify, abort, request, make_response, url_for
 import requests
 import json
 from flask_cors import CORS, cross_origin
-from src.learn import getRandomMovie, getRecomendation, getManyRecomendations, getMovieSelection
+from src.learn import getRandomMovie, getRecomendation, getManyRecomendations, getMovieSelection, getSingleMovieSelection
 
 app = Flask(__name__, static_url_path="")
 # cors = CORS(app)
@@ -81,7 +81,6 @@ def add_movies():
     return response
 
 
-
 @app.route('/movies')
 @cross_origin()
 def movies():
@@ -91,11 +90,23 @@ def movies():
 
     return newMovie, 201
 
-# Gets the movies depending on current user
+# Get movie selection
 @app.route('/movieSelection')
 @cross_origin()
 def movieSelection():
     moviesToSelect = getMovieSelection()
+    response = app.response_class(
+        response=json.dumps(moviesToSelect),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+# Get movie selection
+@app.route('/SingleMovieSelection')
+@cross_origin()
+def SingleMovieSelection():
+    moviesToSelect = getSingleMovieSelection()
     response = app.response_class(
         response=json.dumps(moviesToSelect),
         status=200,

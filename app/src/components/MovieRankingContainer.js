@@ -12,7 +12,7 @@ export default class MovieRankingContainer extends Component {
   };
 
   changeRating = (newRating, name) => {
-    this.props.sendRaiting(newRating, this.props.movieToRank.original_title);
+    this.props.sendRating(newRating, this.props.movieToRank.original_title);
   };
 
   render() {
@@ -56,7 +56,7 @@ export default class MovieRankingContainer extends Component {
             backgroundColor: "#e6432f",
             color: "#fff"
           }}
-          onClick={() => this.props.getRandomMovie("wow")}
+          onClick={() => this.props.getMovieToRate()}
         >
           <ShuffleIcon />
         </Fab>

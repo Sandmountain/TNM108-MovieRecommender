@@ -28,17 +28,6 @@ const styles = {
 };
 
 export default class MovieRanking extends Component {
-  state = {
-    rating: 0
-  };
-
-  changeRating = (newRating, name) => {
-    this.setState({
-      rating: newRating
-    });
-
-    // Axios post rating and movie ID
-  };
   render() {
     const { movieToRank } = this.props;
 
