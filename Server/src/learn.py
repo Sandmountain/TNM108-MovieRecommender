@@ -152,7 +152,7 @@ def getRandomMovie():
     rand = random.randint(1, len(df))
 
     df_temp = df.iloc[[rand]]
-  
+
     return {'original_title': df_temp.iloc[0]['original_title'], 'poster_path': "http://image.tmdb.org/t/p/w185" + df_temp.iloc[0]['poster_path'], 'overview': df_temp.iloc[0]['overview']}
 
 
@@ -175,6 +175,18 @@ def getMovieSelection():
     for i in range(0, 3):
         for genre in topGenres:
             movieSelectList.append(topGenres[genre][i])
+
+    return formatMovieSelect(movieSelectList)
+
+
+def getSingleMovieSelection():
+    movieSelectList = []
+    df_pop_sorted = df.sort_values(
+        by=['popularity'], ascending=False).head(100)
+    print(df_pop_sorted[['original_title', 'popularity']].head(5))
+
+    movieSelectList = df_pop_sorted[[
+        "id", "original_title", 'poster_path']].values.tolist()
 
     return formatMovieSelect(movieSelectList)
 
