@@ -11,9 +11,10 @@ app = Flask(__name__, static_url_path="")
 movieList = ''
 movieListArray = []
 movieFeatures = []
+movieBlackList = []
 CORS(app, resources=r'/*', headers='Content-Type')
 
-movieBlackList = []
+
 
 
 @app.errorhandler(400)
@@ -26,7 +27,11 @@ def not_found(error):
 def add_movie():
     if not request.json or not 'title' in request.json:
         abort(400)
-
+ 
+    movieListArray = []
+    movieFeatures = []
+    movieBlackList = []
+    
     if(request.json["recommend"] == True):
         movieFeatures.append(getRecomendation(request.json['title'])[0])
         movieListArray = getManyRecomendations(movieFeatures, movieBlackList)
@@ -34,6 +39,8 @@ def add_movie():
         movieBlackList.append(request.json['title'])
         # Update with last added values without the blacklist
         movieListArray = getManyRecomendations(movieFeatures, movieBlackList)
+    
+    print(movieFeatures)
 
     response = app.response_class(
         response=json.dumps(movieListArray),
@@ -41,6 +48,19 @@ def add_movie():
         mimetype='application/json'
     )
     return response
+
+# Adding movies to find similarity with
+@app.route('/reset_recomendations')
+@cross_origin()
+def reset_recomendations():
+    movieList = ''
+    movieListArray = []
+    movieFeatures = []
+    movieBlackList = []
+    print("resetted")
+
+    return "hello", 200
+    
 
 # Adding movies to find similarity with
 @app.route('/add_movies', methods=['POST'])

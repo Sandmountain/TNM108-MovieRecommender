@@ -24,7 +24,7 @@ def get_poster_path_from_index(index):
 
 def combine_features(row):
     try:
-        return row["genres"] + " " + row["director"] + "" + str(row["revenue"]) + "" + row["release_date"]
+        return row["genres"] + " " + row["director"] + "" + str(row["budget"]) + "" + row["release_date"] + "" + row["top_cast"] + "" + row["keywords"]
     except ValueError as e:
         print(e)
 
@@ -33,7 +33,7 @@ def combine_features(row):
 
 def init():
     # Step 2: Select Features
-    features = ['genres', 'director', 'revenue', "release_date"]
+    features = ['genres', 'director', 'budget', "release_date", "top_cast", "keywords"]
 
     # Step 3: Create a column in DF which combines all selected features
     for feature in features:
@@ -52,7 +52,7 @@ def init():
 def getRecomendation(movie_user_likes):
     # Step 6: Get index of this movie from its title
     movie_index = get_index_from_title(movie_user_likes)
-    print(cSimilarity[movie_index])
+   
     return movie_index, getRecomendationList(cSimilarity[movie_index])
 
 
@@ -74,12 +74,14 @@ def getManyRecomendations(movie_indexes, movieBlackList):
 
 def chooseMovies(similar_movie_list, movie_indexes, movieBlackList):
     # A list of similiarlities to other movies, sorted with highest similiariteis first.
+    
     moviesToRecommend = set()
     # design choise: choosing 4 movies from the latest added, 4 old ones.
     if(len(movie_indexes) == 1):
+
         similarIDX = 1
         # Runs until the list is filled with 8 elements
-        while len(moviesToRecommend) < 8:
+        while len(moviesToRecommend) < 12:
             movieToAdd = get_title_from_index(
                 similar_movie_list[0][similarIDX][0])
             if(movieToAdd in movieBlackList):
@@ -90,7 +92,7 @@ def chooseMovies(similar_movie_list, movie_indexes, movieBlackList):
     else:
         # Take 4 random movies from older ones.
         moviesToRecommend = set()
-        for i in range(1, 8):
+        for i in range(1, 10):
             # take a random movie then select a random of the 5 most similar in the lists
             sizeOfSet = len(moviesToRecommend)
             similarIDX = 1
@@ -174,7 +176,8 @@ def getMovieSelection():
 
     for i in range(0, 3):
         for genre in topGenres:
-            movieSelectList.append(topGenres[genre][i])
+            movieIDX = random.randint(0,9)
+            movieSelectList.append(topGenres[genre][movieIDX])
 
     return formatMovieSelect(movieSelectList)
 

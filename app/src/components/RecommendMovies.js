@@ -5,7 +5,7 @@ export default class RecommendMovies extends Component {
   render() {
     return (
       <div>
-        <GridList cellHeight={"auto"} cols={5}>
+        <GridList cellHeight={"auto"} cols={6}>
           {this.props.imgData.map(tile => (
             <GridListTile key={tile.id}>
               <img

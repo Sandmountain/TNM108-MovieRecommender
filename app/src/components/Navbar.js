@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 export default function Navbar() {
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar variant="dense">
           <Grid container justify="center" alignItems="center">
             <Grid item sm={6} align="center">

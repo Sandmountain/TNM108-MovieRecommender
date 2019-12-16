@@ -6,12 +6,15 @@ import Card from "@material-ui/core/Card";
 import Button from "@material-ui/core/Button";
 import RecommendMovies from "./RecommendMovies";
 import ImageSelection from "./ImageSelection";
+import SingleImageSelection from "./SingleImageSelection";
 import MovieRanking from "./MovieRanking";
 import MovieRankingContainer from "./MovieRankingContainer";
+import ShuffleIcon from "@material-ui/icons/Shuffle";
 
 import axios from "axios";
+import { Fab } from "@material-ui/core";
 
-export default class MainContainer extends Component {
+export default class SingleRecomendation extends Component {
   state = {
     recommendedMovies: [],
     selectedMovies: [],
@@ -52,25 +55,19 @@ export default class MainContainer extends Component {
   };
 
   selectedMovie = title => {
-    this.setState({ selectedMovies: [...this.state.selectedMovies, title] });
+    let payload = {
+      title: title,
+      recommend: true
+    };
 
-    if (this.state.selectedMovies.length === 2) {
-      let payload = [];
+    axios.post("http://localhost:5000/add_movie", payload).then(res =>
+      this.setState({
+        recommendedMovies: res.data
+      })
+    );
 
-      for (let i = 0; i < this.state.selectedMovies.length; i++) {
-        payload.push({
-          title: this.state.selectedMovies[i]
-        });
-      }
-      axios.post("http://localhost:5000/add_movies", payload).then(res =>
-        this.setState({
-          recommendedMovies: res.data
-        })
-      );
-
-      //this.getRecommendedMovies();
-      this.getMovieToRate();
-    }
+    //this.getRecommendedMovies();
+    this.getMovieToRate();
   };
 
   getRandomMovie = () => {
@@ -91,8 +88,17 @@ export default class MainContainer extends Component {
           direction="column"
           justify="center"
           alignItems="center"
-          style={{ marginTop: "100px" }}
+          style={{ marginTop: "35px", marginBottom: "20px" }}
         >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => console.log("resuffle")}
+            style={{ marginBottom: 65 }}
+          >
+            {" "}
+            Reshuffle movie selection{" "}
+          </Button>
           {this.state.movieToRank.original_title !== "" ? (
             <Grid item xs={8}>
               <Card style={{ marginBottom: 20 }}>
@@ -124,7 +130,7 @@ export default class MainContainer extends Component {
           ) : (
             <Grid item xs={8}>
               <Paper style={{ padding: 5 }}>
-                <ImageSelection
+                <SingleImageSelection
                   imgData={this.state.movieSelection}
                   selectedMovie={this.selectedMovie}
                 />
