@@ -28,7 +28,7 @@ export default class ImageSelection extends Component {
 
     return (
       <div>
-        <GridList cellHeight={200} cols={5} style={styles.gridList}>
+        <GridList cellHeight={"auto"} cols={5} style={styles.gridList}>
           {imgData.slice(start, end).map(tile => (
             <GridListTile key={tile.id}>
               <img
@@ -38,7 +38,6 @@ export default class ImageSelection extends Component {
               />
               <GridListTileBar
                 title={tile.title}
-                subtitle={<span>by: {tile.author}</span>}
                 actionIcon={
                   <IconButton
                     color="secondary"

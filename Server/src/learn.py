@@ -24,7 +24,7 @@ def get_poster_path_from_index(index):
 
 def combine_features(row):
     try:
-        return row["genres"] + " " + row["keywords"] + " " + row["director"]
+        return row["genres"] + " " + row["director"] + "" + str(row["revenue"]) + "" + row["release_date"]
     except ValueError as e:
         print(e)
 
@@ -33,7 +33,7 @@ def combine_features(row):
 
 def init():
     # Step 2: Select Features
-    features = ['genres', 'keywords', 'director']
+    features = ['genres', 'director', 'revenue', "release_date"]
 
     # Step 3: Create a column in DF which combines all selected features
     for feature in features:
@@ -90,7 +90,7 @@ def chooseMovies(similar_movie_list, movie_indexes, movieBlackList):
     else:
         # Take 4 random movies from older ones.
         moviesToRecommend = set()
-        for i in range(1, 7):
+        for i in range(1, 8):
             # take a random movie then select a random of the 5 most similar in the lists
             sizeOfSet = len(moviesToRecommend)
             similarIDX = 1
@@ -108,7 +108,7 @@ def chooseMovies(similar_movie_list, movie_indexes, movieBlackList):
                 if(sizeOfSet < len(moviesToRecommend)):
                     break
         # Movies from the latest one added
-        for i in range(1, 3):
+        for i in range(1, 4):
             sizeOfSet = len(moviesToRecommend)
             similarIDX = 1
             while(True):

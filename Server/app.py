@@ -51,7 +51,7 @@ def add_movies():
         print(getRecomendation(movie['title'])[0])
         movieFeatures.append(getRecomendation(movie['title'])[0])
 
-    movieListArray = getManyRecomendations(movieFeatures)
+    movieListArray = getManyRecomendations(movieFeatures, movieBlackList)
 
     response = app.response_class(
         response=json.dumps(movieListArray),

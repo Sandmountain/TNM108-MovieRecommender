@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 
@@ -10,26 +10,6 @@ import MovieRanking from "./MovieRanking";
 import MovieRankingContainer from "./MovieRankingContainer";
 
 import axios from "axios";
-import { Fab } from "@material-ui/core";
-
-const styles = {
-  paper: {
-    textAlign: "center",
-    backgroundColor: "#f00",
-    padding: "5px"
-  },
-  paperTitle: {
-    textAlign: "center",
-    backgroundColor: "#313131",
-    marginBottom: "10px",
-    padding: "5px"
-  },
-  paperImgSel: {
-    backgroundColor: "#777777",
-    marginBottom: "10px",
-    padding: "5px"
-  }
-};
 
 export default class MainContainer extends Component {
   state = {
@@ -137,7 +117,7 @@ export default class MainContainer extends Component {
 
           {this.state.recommendedMovies.length > 0 ? (
             <Grid item xs={8}>
-              <Paper>
+              <Paper style={{ padding: 5 }}>
                 <RecommendMovies imgData={this.state.recommendedMovies} />
               </Paper>
             </Grid>
