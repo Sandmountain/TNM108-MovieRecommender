@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Paper from "@material-ui/core/Paper";
 
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import Button from "@material-ui/core/Button";
 import RecommendMovies from "./RecommendMovies";
-import ImageSelection from "./ImageSelection";
 import SingleImageSelection from "./SingleImageSelection";
 import MovieRanking from "./MovieRanking";
 import MovieRankingContainer from "./MovieRankingContainer";
@@ -79,12 +78,6 @@ export default class SingleRecomendation extends Component {
     this.getMovieToRate();
   };
 
-  sendRaiting = (raiting, name) => {
-    //send to server
-    console.log("Sending raiting to server, then should update");
-    console.log(raiting + ", and " + name);
-  };
-
   render() {
     return (
       <div>
@@ -95,39 +88,6 @@ export default class SingleRecomendation extends Component {
           alignItems="center"
           style={{ marginTop: "35px", marginBottom: "20px" }}
         >
-          {this.state.recommendedMovies.length === 0 ? (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => this.getMovieSelection()}
-              style={{ marginBottom: 65 }}
-            >
-              {" "}
-              Reshuffle movie selection{" "}
-            </Button>
-          ) : null}
-          {this.state.movieToRank.original_title !== "" ? (
-            <Grid item xs={8}>
-              <Card style={{ marginBottom: 20 }}>
-                <Grid container alignItems="center">
-                  <Grid item xs={2}>
-                    <MovieRanking movieToRank={this.state.movieToRank} />
-                  </Grid>
-                  <Grid item xs={10} style={{ padding: 15 }}>
-                    <MovieRankingContainer
-                      sendRaiting={this.sendRaiting}
-                      getRandomMovie={this.getRandomMovie}
-                      movieToRank={this.state.movieToRank}
-                    />
-                    <Grid />
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
-          ) : (
-            <div></div>
-          )}
-
           {this.state.recommendedMovies.length > 0 ? (
             <Grid item xs={8}>
               <Paper style={{ padding: 5 }}>
@@ -135,14 +95,25 @@ export default class SingleRecomendation extends Component {
               </Paper>
             </Grid>
           ) : (
-            <Grid item xs={8}>
-              <Paper style={{ padding: 5 }}>
-                <SingleImageSelection
-                  imgData={this.state.movieSelection}
-                  selectedMovie={this.selectedMovie}
-                />
-              </Paper>
-            </Grid>
+            <Fragment>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => this.getMovieSelection()}
+                style={{ marginBottom: 65 }}
+              >
+                {" "}
+                Reshuffle movie selection{" "}
+              </Button>
+              <Grid item xs={8}>
+                <Paper style={{ padding: 5 }}>
+                  <SingleImageSelection
+                    imgData={this.state.movieSelection}
+                    selectedMovie={this.selectedMovie}
+                  />
+                </Paper>
+              </Grid>
+            </Fragment>
           )}
         </Grid>
       </div>
