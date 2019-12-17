@@ -24,7 +24,7 @@ def get_poster_path_from_index(index):
 
 def combine_features(row):
     try:
-        return row["original_title"] + " " + row["director"] + " " + row["keywords"] + " " + row["top_cast"] + " " + row["firstGenre"]
+        return row["original_title"] + " " + row["director"] + " " + row["keywords"] + " " + row["firstGenre"] + " " + str(row["budget"])
     except ValueError as e:
         print(e)
 
@@ -33,7 +33,7 @@ def combine_features(row):
 
 def init():
     # Step 2: Select Features
-    features = ['director', "keywords", "original_title", "top_cast", "firstGenre"]
+    features = ['director', "keywords", "original_title", "firstGenre", "budget"]
 
     # Step 3: Create a column in DF which combines all selected features
     for feature in features:
