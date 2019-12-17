@@ -95,15 +95,17 @@ export default class SingleRecomendation extends Component {
           alignItems="center"
           style={{ marginTop: "35px", marginBottom: "20px" }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => this.getMovieSelection()}
-            style={{ marginBottom: 65 }}
-          >
-            {" "}
-            Reshuffle movie selection{" "}
-          </Button>
+          {this.state.recommendedMovies.length === 0 ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => this.getMovieSelection()}
+              style={{ marginBottom: 65 }}
+            >
+              {" "}
+              Reshuffle movie selection{" "}
+            </Button>
+          ) : null}
           {this.state.movieToRank.original_title !== "" ? (
             <Grid item xs={8}>
               <Card style={{ marginBottom: 20 }}>

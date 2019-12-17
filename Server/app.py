@@ -40,7 +40,7 @@ def add_movie():
         # Update with last added values without the blacklist
         movieListArray = getManyRecomendations(movieFeatures, movieBlackList)
     
-    print(movieFeatures)
+    #print(movieListArray)
 
     response = app.response_class(
         response=json.dumps(movieListArray),
@@ -49,18 +49,25 @@ def add_movie():
     )
     return response
 
-# Adding movies to find similarity with
+# Resetting the backend
 @app.route('/reset_recomendations')
 @cross_origin()
 def reset_recomendations():
     movieList = ''
-    movieListArray = []
-    movieFeatures = []
-    movieBlackList = []
+    del movieListArray[:]
+    del movieFeatures[:]
+    del movieBlackList[:]
     print("resetted")
-
+   
     return "hello", 200
     
+# Adding movies to find similarity with
+@app.route('/recomendation_stack')
+@cross_origin()
+def recomendation_stack():
+    print(movieFeatures)
+   
+    return "hello", 200
 
 # Adding movies to find similarity with
 @app.route('/add_movies', methods=['POST'])

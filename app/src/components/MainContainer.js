@@ -11,6 +11,8 @@ import MovieRankingContainer from "./MovieRankingContainer";
 
 import axios from "axios";
 
+let moviesToAdd = [];
+
 export default class MainContainer extends Component {
   state = {
     recommendedMovies: [],
@@ -47,15 +49,17 @@ export default class MainContainer extends Component {
 
   selectedMovie = title => {
     this.setState({ selectedMovies: [...this.state.selectedMovies, title] });
+    moviesToAdd.push(title);
 
     if (this.state.selectedMovies.length === 2) {
       let payload = [];
-
-      for (let i = 0; i < this.state.selectedMovies.length; i++) {
+      console.log(moviesToAdd);
+      for (let i = 0; i < moviesToAdd.length; i++) {
         payload.push({
-          title: this.state.selectedMovies[i]
+          title: moviesToAdd[i]
         });
       }
+      moviesToAdd = [];
       axios.post("http://localhost:5000/add_movies", payload).then(res =>
         this.setState({
           recommendedMovies: res.data

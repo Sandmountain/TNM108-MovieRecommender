@@ -41,7 +41,7 @@ export default class OptionsMenu extends Component {
                 component="h3"
                 style={{ paddingBottom: 20 }}
               >
-                Select type of recomendation System
+                Select type of recomendation system
               </Typography>
             </Grid>
             <Grid item align="center">
@@ -66,7 +66,17 @@ export default class OptionsMenu extends Component {
                 color="primary"
                 onClick={() => this.resetRecomendations()}
               >
-                Reset Recomendation system
+                Reset
+              </Button>
+              {"  "}
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  axios.get("http://localhost:5000/recomendation_stack")
+                }
+              >
+                Print Backend
               </Button>
             </Grid>
           </div>
