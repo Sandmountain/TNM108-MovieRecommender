@@ -1,2 +1,2 @@
 # TNM108-MovieRecommender
-A machine learning project to predict movies from previous raitings. Based on youtube/netflix
+A machine learning project to predict similar movies. Using scikit-learn with Cosine Similairy Based on youtube/netflix
