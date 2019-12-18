@@ -24,7 +24,7 @@ def get_poster_path_from_index(index):
 
 def combine_features(row):
     try:
-        return row["original_title"] + " " + row["director"] + " " + row["keywords"] + " " + row["firstGenre"] + " " + str(row["budget"])
+        return row["top_cast"] + " " + row["director"] + " " + row["keywords"] + " " + row["genres"] + " " + row["prod_comp"]
     except ValueError as e:
         print(e)
 
@@ -33,7 +33,7 @@ def combine_features(row):
 
 def init():
     # Step 2: Select Features
-    features = ['director', "keywords", "original_title", "firstGenre", "budget"]
+    features = ['director', "keywords", "top_cast", "genres", "prod_comp"]
 
     # Step 3: Create a column in DF which combines all selected features
     for feature in features:
@@ -53,7 +53,7 @@ def init():
 def getRecomendation(movie_user_likes):
     # Step 6: Get index of this movie from its title
     movie_index = get_index_from_title(movie_user_likes)
-   
+
     return movie_index, getRecomendationList(cSimilarity[movie_index])
 
 
@@ -75,7 +75,7 @@ def getManyRecomendations(movie_indexes, movieBlackList):
 
 def chooseMovies(similar_movie_list, movie_indexes, movieBlackList):
     # A list of similiarlities to other movies, sorted with highest similiariteis first.
-    
+
     moviesToRecommend = set()
     # design choise: choosing 4 movies from the latest added, 4 old ones.
     if(len(movie_indexes) == 1):
@@ -177,7 +177,7 @@ def getMovieSelection():
 
     for i in range(0, 3):
         for genre in topGenres:
-            movieIDX = random.randint(0,9)
+            movieIDX = random.randint(0, 9)
             movieSelectList.append(topGenres[genre][movieIDX])
 
     return formatMovieSelect(movieSelectList)
@@ -194,12 +194,13 @@ def getSingleMovieSelection():
 
     return formatMovieSelect(movieSelectList)
 
+
     # Read topGenres.json
 with open('./src/data/topGenres.json') as json_file:
     topGenres = json.load(json_file)
 
 # Step 1: Read CSV File
-df = pd.read_csv("./src/data/trim_movie_database_with_firstGenre.csv",
+df = pd.read_csv("./src/data/movie_dataset_final_scrubbed.csv",
                  low_memory=False, index_col=0)
 df = df.reset_index()
 
