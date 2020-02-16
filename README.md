@@ -17,7 +17,7 @@ A pdf for this project can be read in the file (simple_movie_recommender.pdf) in
 ## Run the application
 
 	1. Run npm start in the /app folder
-	2. Run python start in the /Server folder
+	2. Run python app.py in the /Server folder
 
 
 
